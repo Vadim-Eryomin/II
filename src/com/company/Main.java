@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -46,14 +47,21 @@ public class Main {
     }
 
     public static int[] getBuffImageAsPArray(String path) throws IOException {
-        int[] image = ImageIO.read(new File("D:/Programms/программирование/neuro/src/com/company/train2.png")).getRGB(0,0,10,20,null,0,10);
-        return image;
+        int[] p = ImageIO.read(new File("D:/Programms/программирование/neuro/src/com/company/train2.png")).getRGB(0,0,10,20,null,0,10);
+        for (int i = 0; i < p.length; i++) {
+            p[i] = -p[i]>>16;
+        }
+        return p;
     }
 
     public static int getWeightByAnotherFile(int[] weights, int[] p) {
         int count = 0;
+        System.out.println(Arrays.toString(weights));
+        System.out.println(Arrays.toString(p));
         for (int i = 0; i < p.length; i++) {
-            count += (p[i] * weights[i] > 0.5 ? 1 : 0);
+            System.out.println(p[i]*weights[i]);
+
+            count += (p[i] * weights[i] > 16384 ? 1 : 0);
         }
         return count;
     }
