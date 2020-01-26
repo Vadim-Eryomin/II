@@ -15,7 +15,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) throws IOException {
         System.out.println("!");
-        Scanner scan = new Scanner(new FileReader("1.json"));
+        Scanner scan = new Scanner(new FileReader("0.json"));
         System.out.println("!");
         int[] weights = getWeights(scan);
         System.out.println("!");
