@@ -11,7 +11,7 @@ import java.io.IOException;
 public class Reader {
     public static void main(String[] args) throws IOException {
         FileWriter fw = new FileWriter("0.json");
-        BufferedImage image = ImageIO.read(new File("D:/Programms/программирование/neuro/src/com/company/train.png"));
+        BufferedImage image = ImageIO.read(new File("E:/образование и самообразование Вадим/II/src/com/company/train.png"));
         int[] p = image.getRGB(0, 0, image.getWidth(), image.getHeight(), null, 0, image.getWidth());
         for (int i = 0; i < p.length; i++) {
             p[i] = -p[i]>>16;

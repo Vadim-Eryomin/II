@@ -13,6 +13,7 @@ public class IIFrame extends JFrame {
     }
     public static BufferedImage image = null;
     static Graphics g = GraphicsCreator.create();
+    public static DrawPanelII panel;
 
     static {
         try {
@@ -28,7 +29,7 @@ public class IIFrame extends JFrame {
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setDefaultLookAndFeelDecorated(true);
-        DrawPanelII panel = new DrawPanelII();
+        panel = new DrawPanelII();
         add(panel);
         validate();
     }

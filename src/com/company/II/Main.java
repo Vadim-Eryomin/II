@@ -15,34 +15,51 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    public static int[] weights;
+    public static int[][] weights = new int[10][200];
+    public static int[] koefs = new int[10];
+    public static IIFrame frame;
 
     public static void main(String[] args) throws IOException {
-        IIFrame frame = new IIFrame();
-        Scanner scan = new Scanner(new FileReader("1.json"));
-        weights = getWeights(scan);
+        frame = new IIFrame();
     }
 
-    public static void check(int[] weights, int whichNumber) throws IOException {
-        int[] p = getBuffImageAsPArray();
-        int koef = getWeightByAnotherFile(weights, p);
-        System.out.println(koef);
-        if (koef <= 20 && whichNumber == 1) {
-            setWeights(weights);
+    public static void check(int[][] weights, int whichNumber) throws IOException {
+        for (int i = 0; i < 10; i++) {
+            Scanner scan = new Scanner(new FileReader(i+".json"));
+            weights[i] = getWeights(scan);
         }
+        int[] p = getBuffImageAsPArray();
+        for (int i = 0; i < 10; i++) {
+            int koef = getWeightByAnotherFile(weights[i], p);
+            System.out.println(koef);
+            koefs[i] = koef;
+        }
+        int maxIndex = 0;
+        for (int i = 0; i < 10; i++) {
+            if (koefs[maxIndex] < koefs[i]){
+                    maxIndex = i;
+            }
+        }
+        if (whichNumber != maxIndex){
+            setWeights(weights[whichNumber], whichNumber);
+        }
+        IIFrame.panel.who.setText("я думаю, что это " + maxIndex);
+        frame.validate();
+
     }
 
-    public static void setWeights(int weights[]) throws IOException {
+    public static void setWeights(int weights[], int whichNumber) throws IOException {
         BufferedImage image = IIFrame.image;
         int[] p = image.getRGB(0, 0, image.getWidth(), image.getHeight(), null, 0, image.getWidth());
         for (int i = 0; i < p.length; i++) {
             p[i] = -p[i] >> 16;
         }
         for (int i = 0; i < p.length; i++) {
-            weights[i] = p[i] > weights[i] ? p[i] / 10 + weights[i] : weights[i] - p[i] / 10;
+            weights[i] = (2 * weights[i] + p[i]) / 3;
         }
         JSONArray array = new JSONArray(p);
-        FileWriter fw = new FileWriter("1.json");
+        FileWriter fw = new FileWriter(whichNumber+".json");
+        System.out.println(whichNumber+".json");
         fw.write(array.toString());
         fw.flush();
     }
@@ -69,11 +86,7 @@ public class Main {
 
     public static int getWeightByAnotherFile(int[] weights, int[] p) {
         int count = 0;
-        System.out.println(Arrays.toString(weights));
-        System.out.println(Arrays.toString(p));
         for (int i = 0; i < p.length; i++) {
-            System.out.println(p[i] * weights[i]);
-
             count += (p[i] * weights[i] > 8000 ? 1 : 0);
         }
         return count;

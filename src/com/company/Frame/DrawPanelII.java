@@ -17,6 +17,7 @@ public class DrawPanelII extends JPanel {
     static JButton choose;
     static JButton teach;
     static ImagePanel draw;
+    public static JLabel who;
 
     public DrawPanelII() {
         setLayout(new GridBagLayout());
@@ -49,11 +50,13 @@ public class DrawPanelII extends JPanel {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 File file;
-                if (fileChooser.showOpenDialog(fileChooser) == fileChooser.APPROVE_OPTION){
+                if (fileChooser.showOpenDialog(null) == fileChooser.APPROVE_OPTION){
                     file = fileChooser.getSelectedFile();
                     try {
                         IIFrame.image = ImageIO.read(file);
                         Main.check(Main.weights, Integer.parseInt(number.getText()));
+                        validate();
+                        Main.frame.validate();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -62,6 +65,13 @@ public class DrawPanelII extends JPanel {
         });
 
         add(choose, c);
+
+        c.gridx = 2;
+        c.gridy = 4;
+        c.gridheight = 1;
+        c.gridwidth = 1;
+        who = new JLabel();
+        add(who, c);
 
         validate();
     }
